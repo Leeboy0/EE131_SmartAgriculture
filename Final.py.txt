@@ -1,0 +1,27 @@
+import requests
+import serial
+import time
+
+def get_la_weather(api_key):
+    url = "http://api.openweathermap.org/data/2.5/weather"
+    params = {
+        'q': 'Los Angeles,US',
+        'appid': api_key,
+        'units': 'metric'
+    }
+
+    response = requests.get(url, params=params)
+    if response.status_code == 200:
+        data = response.json()
+        weather_description = data['weather'][0]['description']
+        temperature = data['main']['temp']
+        print(f"Weather in Los Angeles: {weather_description}, Temperature: {temperature}°C")
+    else:
+        print("Error fetching weather data")
+
+# Replace 'YOUR_API_KEY' with your actual OpenWeatherMap API key
+api_key = 'e84e39326749b92dedb3066415a6a317'
+get_la_weather(api_key)
+
+ser = serial.Serial('/dev/ttyCOM3', 9600, timeout=1)
+time.sleep(2)
